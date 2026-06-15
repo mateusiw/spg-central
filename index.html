@@ -388,17 +388,17 @@
     });
 
     // ── Sessão (localStorage) ──
-    const CHAVE_SESSAO = 'spg_usuario';
+    const CHAVE_SESSAO = 'spg_sessao';
 
-    function abrirApp(nomeUsuario) {
+    function abrirApp(nome, perfil) {
         document.getElementById('loginOverlay').style.display = 'none';
         document.getElementById('appContent').style.display   = 'block';
-        document.getElementById('headerUsuario').textContent  = nomeUsuario;
-        carregarLinks();
+        document.getElementById('headerUsuario').textContent  = nome;
+        carregarLinks(perfil);
     }
 
-    function salvarSessao(nome) {
-        localStorage.setItem(CHAVE_SESSAO, nome);
+    function salvarSessao(nome, perfil) {
+        localStorage.setItem(CHAVE_SESSAO, JSON.stringify({ nome, perfil }));
     }
 
     function encerrarSessao() {
@@ -435,8 +435,10 @@
             const data = await res.json();
 
             if (data.ok) {
-                salvarSessao(data.nome || usuario);
-                abrirApp(data.nome || usuario);
+                const nome   = data.nome   || usuario;
+                const perfil = data.perfil || 'master';
+                salvarSessao(nome, perfil);
+                abrirApp(nome, perfil);
             } else {
                 loginErro.textContent = data.erro || 'Usuário ou senha inválidos.';
             }
@@ -457,14 +459,19 @@
     // ── Verificar sessão salva ao carregar ──
     const sessaoSalva = localStorage.getItem(CHAVE_SESSAO);
     if (sessaoSalva) {
-        abrirApp(sessaoSalva);
+        try {
+            const { nome, perfil } = JSON.parse(sessaoSalva);
+            abrirApp(nome, perfil);
+        } catch {
+            localStorage.removeItem(CHAVE_SESSAO);
+        }
     }
 
     // ── Carregar Links da Planilha ──
-    async function carregarLinks() {
+    async function carregarLinks(perfil = 'master') {
         const main = document.getElementById('mainContent');
         try {
-            const res  = await fetch(`${APPS_SCRIPT_URL}?action=links`);
+            const res  = await fetch(`${APPS_SCRIPT_URL}?action=links&perfil=${encodeURIComponent(perfil)}`);
             const json = await res.json();
 
             if (!json.ok || !json.data || !json.data.length) {
