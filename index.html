@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPG — Central de Sistemas</title>
-    <link id="siteFavicon" rel="icon" type="image/svg+xml">
+    <title>SPG — Central Sites</title>
+    <link id="siteFavicon" rel="icon" type="image/png">
     <link id="siteAppleTouchIcon" rel="apple-touch-icon">
     <link id="siteManifest" rel="manifest">
     <style>
@@ -16,6 +16,123 @@
             color: #f1f5f9;
             min-height: 100vh;
         }
+
+        /* ── Login ── */
+        #loginOverlay {
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 40px 32px 32px;
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .login-card img {
+            width: 72px;
+            height: 72px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+        }
+
+        .login-card h2 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .login-card .subtitle {
+            font-size: 0.62rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-weight: 700;
+            margin-top: -6px;
+            margin-bottom: 6px;
+        }
+
+        .login-input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #f1f5f9;
+            font-size: 0.875rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .login-input:focus { border-color: #3b82f6; }
+        .login-input::placeholder { color: #475569; }
+
+        .senha-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .senha-wrap .login-input { padding-right: 44px; }
+
+        .btn-olho {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            transition: color 0.15s;
+        }
+
+        .btn-olho:hover { color: #94a3b8; }
+
+        .btn-entrar {
+            width: 100%;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 11px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.15s;
+            margin-top: 4px;
+        }
+
+        .btn-entrar:hover { background: #2563eb; }
+        .btn-entrar:disabled { background: #1e3a5f; color: #475569; cursor: not-allowed; }
+
+        .login-erro {
+            color: #ef4444;
+            font-size: 0.75rem;
+            text-align: center;
+            min-height: 16px;
+        }
+
+        /* ── App ── */
+        #appContent { display: none; }
 
         header {
             background: #1e293b;
@@ -113,122 +230,137 @@
             letter-spacing: 0.1em;
             border-top: 1px solid #1e293b;
         }
+
+        .header-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-usuario {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-sair {
+            background: none;
+            border: 1px solid #334155;
+            border-radius: 5px;
+            color: #64748b;
+            font-size: 0.7rem;
+            font-family: inherit;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
+        }
+
+        .btn-sair:hover { border-color: #ef4444; color: #ef4444; }
+
+        .loading-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid #334155;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .msg-info {
+            text-align: center;
+            margin-top: 60px;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .msg-erro {
+            text-align: center;
+            margin-top: 60px;
+            color: #ef4444;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <img src="https://i.imgur.com/wEozr34.png" alt="Logo SPG">
-    <div>
-        <h1>SPG Sede</h1>
-        <p>Central de Sistemas</p>
+<!-- ── Tela de Login ── -->
+<div id="loginOverlay">
+    <div class="login-card">
+        <img src="https://i.imgur.com/AHcNvib.png" alt="Logo SPG">
+        <h2>SPG Sede</h2>
+        <p class="subtitle">Central de Sites</p>
+
+        <input class="login-input" type="text" id="loginUsuario"
+               placeholder="Usuário" autocomplete="username">
+
+        <div class="senha-wrap">
+            <input class="login-input" type="password" id="loginSenha"
+                   placeholder="Senha" autocomplete="current-password">
+            <button class="btn-olho" type="button" id="btnOlho" title="Mostrar/ocultar senha">
+                <svg id="iconOlho" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
+        </div>
+
+        <button class="btn-entrar" id="btnLogin">Entrar</button>
+        <p class="login-erro" id="loginErro"></p>
     </div>
-</header>
+</div>
 
-<main>
+<!-- ── Conteúdo Principal ── -->
+<div id="appContent">
+    <header>
+        <img src="https://i.imgur.com/AHcNvib.png" alt="Logo SPG">
+        <div>
+            <h1>SPG Sede</h1>
+            <p>Central de Sites</p>
+        </div>
+        <div class="header-right">
+            <span class="header-usuario" id="headerUsuario"></span>
+            <button class="btn-sair" id="btnSair">Sair</button>
+        </div>
+    </header>
 
-    <div class="section-title">Colheita &amp; Produção</div>
-    <div class="grid">
-        <a class="card" href="https://mateusiw.github.io/resumo-colheita-spg-oasis/" target="_blank">
-            <span class="icon">🌿</span> Resumo de Colheita — Oásis
-        </a>
-        <a class="card" href="https://mateusiw.github.io/colheita-estufa/" target="_blank">
-            <span class="icon">🏡</span> Colheita Estufa
-        </a>
-        <a class="card" href="https://mateusiw.github.io/produtividade-spg-oasis/" target="_blank">
-            <span class="icon">📊</span> Produtividade — Oásis
-        </a>
-        <a class="card" href="https://mateusiw.github.io/produtividade-spg-estufa/" target="_blank">
-            <span class="icon">📈</span> Produtividade — Estufa
-        </a>
-        <a class="card" href="https://mateusiw.github.io/resumo-transplantio/" target="_blank">
-            <span class="icon">🌱</span> Resumo de Transplantio
-        </a>
-        <a class="card" href="https://mateusiw.github.io/detalhes-por-bloco-spg-oasis/" target="_blank">
-            <span class="icon">🗺️</span> Detalhes por Bloco — Oásis
-        </a>
-    </div>
+    <main id="mainContent">
+        <div class="loading-wrap"><div class="spinner"></div></div>
+    </main>
 
-    <div class="section-title">Monitoramento &amp; Registros</div>
-    <div class="grid">
-        <a class="card" href="https://mateusiw.github.io/registro_de_irrigacao/" target="_blank">
-            <span class="icon">💧</span> Registro de Irrigação
-        </a>
-        <a class="card" href="https://mateusiw.github.io/fertiestufa/" target="_blank">
-            <span class="icon">🧪</span> Fertirrigação Estufa
-        </a>
-        <a class="card" href="https://mateusiw.github.io/aplicacao-fitossanitarias/" target="_blank">
-            <span class="icon">🌾</span> Aplicação Fitossanitária
-        </a>
-        <a class="card" href="https://mateusiw.github.io/coleta-leituras/" target="_blank">
-            <span class="icon">📋</span> Coleta de Leituras
-        </a>
-        <a class="card" href="https://mateusiw.github.io/relatorio-servico-trator/" target="_blank">
-            <span class="icon">🚜</span> Relatório Serviço Trator
-        </a>
-        <a class="card" href="https://mateusiw.github.io/coleta-desenvolvimento-estufa/" target="_blank">
-            <span class="icon">🔬</span> Desenvolvimento Estufa
-        </a>
-        <a class="card" href="https://mateusiw.github.io/monitoramento-clima-spg/" target="_blank">
-            <span class="icon">🌤️</span> Monitoramento Clima
-        </a>
-    </div>
-
-    <div class="section-title">Qualidade &amp; Controle</div>
-    <div class="grid">
-        <a class="card" href="https://mateusiw.github.io/controle-de-qualidade/" target="_blank">
-            <span class="icon">✅</span> Controle de Qualidade
-        </a>
-        <a class="card" href="https://mateusiw.github.io/check-list-packing-spg/" target="_blank">
-            <span class="icon">📦</span> Check-list Packing
-        </a>
-        <a class="card" href="https://mateusiw.github.io/check-list-diario/" target="_blank">
-            <span class="icon">☑️</span> Check-list Diário
-        </a>
-        <a class="card" href="https://mateusiw.github.io/descarte-diario-spg/" target="_blank">
-            <span class="icon">🗑️</span> Descarte Diário
-        </a>
-        <a class="card" href="https://mateusiw.github.io/relatorio-de-conformidade-pop/" target="_blank">
-            <span class="icon">📄</span> Conformidade POP
-        </a>
-    </div>
-
-    <div class="section-title">Administrativo &amp; RH</div>
-    <div class="grid">
-        <a class="card" href="https://mateusiw.github.io/recrutamento-spg-sede/" target="_blank">
-            <span class="icon">👥</span> Recrutamento SPG Sede
-        </a>
-        <a class="card" href="https://mateusiw.github.io/avaliacao-de-bonus-mensal/" target="_blank">
-            <span class="icon">⭐</span> Avaliação de Bônus Mensal
-        
-        <a class="card" href="https://mateusiw.github.io/envio-de-comprovantes-nfe/" target="_blank">
-            <span class="icon">🧾</span> Envio de Comprovantes NFe
-        </a>
-        <a class="card" href="https://mateusiw.github.io/programacao-semana-spg/" target="_blank">
-            <span class="icon">📅</span> Programação da Semana
-        </a>
-        <a class="card" href="https://mateusiw.github.io/organograma-spg/" target="_blank">
-            <span class="icon">🏢</span> Organograma SPG
-        </a>
-    </div>
-
-</main>
-
-<footer>SPG Sede — Central de Sistemas Internos</footer>
+    <footer>SPG Sede — Central de Sites</footer>
+</div>
 
 <script>
+    // ── COLE AQUI A URL DO SEU WEB APP (Apps Script) ──
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykQzpzgeFvFdjjtDm3EO-ryWaF7xzmSaKk7B8vParrL42p_AQ0TJKuvRWWjgl7sXt6Jw/exec';
+
+    // ── Brand Assets ──
     function applyBrandAssets() {
         const logoUri = 'https://i.imgur.com/AHcNvib.png';
-        const favicon = document.getElementById('siteFavicon');
-        const appleTouchIcon = document.getElementById('siteAppleTouchIcon');
+        const favicon      = document.getElementById('siteFavicon');
+        const touchIcon    = document.getElementById('siteAppleTouchIcon');
         const manifestLink = document.getElementById('siteManifest');
-
-        if (favicon) { favicon.href = logoUri; favicon.type = 'image/png'; }
-        if (appleTouchIcon) appleTouchIcon.href = logoUri;
+        if (favicon)      { favicon.href = logoUri; favicon.type = 'image/png'; }
+        if (touchIcon)    touchIcon.href = logoUri;
         if (manifestLink) {
             const manifest = {
                 name: 'SPG — Central de Sistemas',
-                short_name: 'SPG',
+                short_name: 'SPG Sistema',
                 start_url: '.',
                 display: 'standalone',
                 background_color: '#0f172a',
@@ -239,6 +371,126 @@
                 ]
             };
             manifestLink.href = `data:application/manifest+json,${encodeURIComponent(JSON.stringify(manifest))}`;
+        }
+    }
+
+    // ── Eye Toggle ──
+    const senhaInput = document.getElementById('loginSenha');
+    const iconOlho   = document.getElementById('iconOlho');
+
+    const SVG_ABERTO  = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+    const SVG_FECHADO = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+    document.getElementById('btnOlho').addEventListener('click', () => {
+        const mostrar = senhaInput.type === 'password';
+        senhaInput.type = mostrar ? 'text' : 'password';
+        iconOlho.innerHTML = mostrar ? SVG_FECHADO : SVG_ABERTO;
+    });
+
+    // ── Sessão (localStorage) ──
+    const CHAVE_SESSAO = 'spg_usuario';
+
+    function abrirApp(nomeUsuario) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('appContent').style.display   = 'block';
+        document.getElementById('headerUsuario').textContent  = nomeUsuario;
+        carregarLinks();
+    }
+
+    function salvarSessao(nome) {
+        localStorage.setItem(CHAVE_SESSAO, nome);
+    }
+
+    function encerrarSessao() {
+        localStorage.removeItem(CHAVE_SESSAO);
+        document.getElementById('appContent').style.display   = 'none';
+        document.getElementById('loginOverlay').style.display = 'flex';
+        document.getElementById('loginUsuario').value = '';
+        senhaInput.value = '';
+        document.getElementById('loginErro').textContent = '';
+    }
+
+    document.getElementById('btnSair').addEventListener('click', encerrarSessao);
+
+    // ── Login ──
+    const btnLogin  = document.getElementById('btnLogin');
+    const loginErro = document.getElementById('loginErro');
+
+    async function fazerLogin() {
+        const usuario = document.getElementById('loginUsuario').value.trim();
+        const senha   = senhaInput.value;
+
+        if (!usuario || !senha) {
+            loginErro.textContent = 'Preencha usuário e senha.';
+            return;
+        }
+
+        btnLogin.disabled     = true;
+        btnLogin.textContent  = 'Entrando…';
+        loginErro.textContent = '';
+
+        try {
+            const url = `${APPS_SCRIPT_URL}?action=login&usuario=${encodeURIComponent(usuario)}&senha=${encodeURIComponent(senha)}`;
+            const res  = await fetch(url);
+            const data = await res.json();
+
+            if (data.ok) {
+                salvarSessao(data.nome || usuario);
+                abrirApp(data.nome || usuario);
+            } else {
+                loginErro.textContent = data.erro || 'Usuário ou senha inválidos.';
+            }
+        } catch {
+            loginErro.textContent = 'Erro de conexão. Verifique a URL do Apps Script.';
+        } finally {
+            btnLogin.disabled    = false;
+            btnLogin.textContent = 'Entrar';
+        }
+    }
+
+    btnLogin.addEventListener('click', fazerLogin);
+    senhaInput.addEventListener('keydown', e => { if (e.key === 'Enter') fazerLogin(); });
+    document.getElementById('loginUsuario').addEventListener('keydown', e => {
+        if (e.key === 'Enter') senhaInput.focus();
+    });
+
+    // ── Verificar sessão salva ao carregar ──
+    const sessaoSalva = localStorage.getItem(CHAVE_SESSAO);
+    if (sessaoSalva) {
+        abrirApp(sessaoSalva);
+    }
+
+    // ── Carregar Links da Planilha ──
+    async function carregarLinks() {
+        const main = document.getElementById('mainContent');
+        try {
+            const res  = await fetch(`${APPS_SCRIPT_URL}?action=links`);
+            const json = await res.json();
+
+            if (!json.ok || !json.data || !json.data.length) {
+                main.innerHTML = '<p class="msg-info">Nenhum sistema encontrado na planilha.</p>';
+                return;
+            }
+
+            const categorias = {};
+            json.data.forEach(item => {
+                const cat = item.categoria || 'Outros';
+                if (!categorias[cat]) categorias[cat] = [];
+                categorias[cat].push(item);
+            });
+
+            main.innerHTML = Object.entries(categorias).map(([cat, itens]) => `
+                <div class="section-title">${cat}</div>
+                <div class="grid">
+                    ${itens.map(item => `
+                        <a class="card" href="${item.url}" target="_blank" rel="noopener">
+                            <span class="icon">${item.icone || '🔗'}</span> ${item.nome}
+                        </a>
+                    `).join('')}
+                </div>
+            `).join('');
+        } catch {
+            main.innerHTML = '<p class="msg-erro">Erro ao carregar sistemas. Verifique a URL do Apps Script.</p>';
         }
     }
 
