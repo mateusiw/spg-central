@@ -217,25 +217,13 @@
 <footer>SPG Sede — Central de Sistemas Internos</footer>
 
 <script>
-    const BRAND_LOGO_SVG = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <rect width="512" height="512" rx="80" fill="#0f172a"/>
-  <rect x="40" y="40" width="432" height="432" rx="60" fill="#1e293b"/>
-  <text x="256" y="290" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="160" font-weight="900" letter-spacing="8" fill="#15803d">SPG</text>
-  <text x="256" y="360" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700" letter-spacing="6" fill="#64748b">SISTEMAS</text>
-</svg>`.trim();
-
-    function getBrandLogoDataUri() {
-        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(BRAND_LOGO_SVG)}`;
-    }
-
     function applyBrandAssets() {
-        const logoUri = getBrandLogoDataUri();
+        const logoUri = 'https://i.imgur.com/AHcNvib.png';
         const favicon = document.getElementById('siteFavicon');
         const appleTouchIcon = document.getElementById('siteAppleTouchIcon');
         const manifestLink = document.getElementById('siteManifest');
 
-        if (favicon) favicon.href = logoUri;
+        if (favicon) { favicon.href = logoUri; favicon.type = 'image/png'; }
         if (appleTouchIcon) appleTouchIcon.href = logoUri;
         if (manifestLink) {
             const manifest = {
@@ -246,8 +234,8 @@
                 background_color: '#0f172a',
                 theme_color: '#0f172a',
                 icons: [
-                    { src: logoUri, sizes: '192x192', type: 'image/svg+xml' },
-                    { src: logoUri, sizes: '512x512', type: 'image/svg+xml' }
+                    { src: logoUri, sizes: '192x192', type: 'image/png' },
+                    { src: logoUri, sizes: '512x512', type: 'image/png' }
                 ]
             };
             manifestLink.href = `data:application/manifest+json,${encodeURIComponent(JSON.stringify(manifest))}`;
