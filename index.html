@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPG — Central de Sistemas</title>
+    <link id="siteFavicon" rel="icon" type="image/svg+xml">
+    <link id="siteAppleTouchIcon" rel="apple-touch-icon">
+    <link id="siteManifest" rel="manifest">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #1e293b;
+            border-bottom: 2px solid #334155;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: white;
+            padding: 3px;
+            border: 1px solid #475569;
+        }
+
+        header h1 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        header p {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 32px 16px 48px;
+        }
+
+        .section-title {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #64748b;
+            margin-bottom: 10px;
+            margin-top: 28px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        a.card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 13px 14px;
+            text-decoration: none;
+            color: #e2e8f0;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            line-height: 1.3;
+        }
+
+        a.card:hover {
+            background: #293548;
+            border-color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        a.card .icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            width: 22px;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: #475569;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-top: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://i.imgur.com/wEozr34.png" alt="Logo SPG">
+    <div>
+        <h1>SPG Sede</h1>
+        <p>Central de Sistemas</p>
+    </div>
+</header>
+
+<main>
+
+    <div class="section-title">Colheita &amp; Produção</div>
+    <div class="grid">
+        <a class="card" href="https://mateusiw.github.io/resumo-colheita-spg-oasis/" target="_blank">
+            <span class="icon">🌿</span> Resumo de Colheita — Oásis
+        </a>
+        <a class="card" href="https://mateusiw.github.io/colheita-estufa/" target="_blank">
+            <span class="icon">🏡</span> Colheita Estufa
+        </a>
+        <a class="card" href="https://mateusiw.github.io/produtividade-spg-oasis/" target="_blank">
+            <span class="icon">📊</span> Produtividade — Oásis
+        </a>
+        <a class="card" href="https://mateusiw.github.io/produtividade-spg-estufa/" target="_blank">
+            <span class="icon">📈</span> Produtividade — Estufa
+        </a>
+        <a class="card" href="https://mateusiw.github.io/resumo-transplantio/" target="_blank">
+            <span class="icon">🌱</span> Resumo de Transplantio
+        </a>
+        <a class="card" href="https://mateusiw.github.io/detalhes-por-bloco-spg-oasis/" target="_blank">
+            <span class="icon">🗺️</span> Detalhes por Bloco — Oásis
+        </a>
+    </div>
+
+    <div class="section-title">Monitoramento &amp; Registros</div>
+    <div class="grid">
+        <a class="card" href="https://mateusiw.github.io/registro_de_irrigacao/" target="_blank">
+            <span class="icon">💧</span> Registro de Irrigação
+        </a>
+        <a class="card" href="https://mateusiw.github.io/fertiestufa/" target="_blank">
+            <span class="icon">🧪</span> Fertirrigação Estufa
+        </a>
+        <a class="card" href="https://mateusiw.github.io/aplicacao-fitossanitarias/" target="_blank">
+            <span class="icon">🌾</span> Aplicação Fitossanitária
+        </a>
+        <a class="card" href="https://mateusiw.github.io/coleta-leituras/" target="_blank">
+            <span class="icon">📋</span> Coleta de Leituras
+        </a>
+        <a class="card" href="https://mateusiw.github.io/relatorio-servico-trator/" target="_blank">
+            <span class="icon">🚜</span> Relatório Serviço Trator
+        </a>
+        <a class="card" href="https://mateusiw.github.io/coleta-desenvolvimento-estufa/" target="_blank">
+            <span class="icon">🔬</span> Desenvolvimento Estufa
+        </a>
+        <a class="card" href="https://mateusiw.github.io/monitoramento-clima-spg/" target="_blank">
+            <span class="icon">🌤️</span> Monitoramento Clima
+        </a>
+    </div>
+
+    <div class="section-title">Qualidade &amp; Controle</div>
+    <div class="grid">
+        <a class="card" href="https://mateusiw.github.io/controle-de-qualidade/" target="_blank">
+            <span class="icon">✅</span> Controle de Qualidade
+        </a>
+        <a class="card" href="https://mateusiw.github.io/check-list-packing-spg/" target="_blank">
+            <span class="icon">📦</span> Check-list Packing
+        </a>
+        <a class="card" href="https://mateusiw.github.io/check-list-diario/" target="_blank">
+            <span class="icon">☑️</span> Check-list Diário
+        </a>
+        <a class="card" href="https://mateusiw.github.io/descarte-diario-spg/" target="_blank">
+            <span class="icon">🗑️</span> Descarte Diário
+        </a>
+        <a class="card" href="https://mateusiw.github.io/relatorio-de-conformidade-pop/" target="_blank">
+            <span class="icon">📄</span> Conformidade POP
+        </a>
+    </div>
+
+    <div class="section-title">Administrativo &amp; RH</div>
+    <div class="grid">
+        <a class="card" href="https://mateusiw.github.io/recrutamento-spg-sede/" target="_blank">
+            <span class="icon">👥</span> Recrutamento SPG Sede
+        </a>
+        <a class="card" href="https://mateusiw.github.io/avaliacao-de-bonus-mensal/" target="_blank">
+            <span class="icon">⭐</span> Avaliação de Bônus Mensal
+        
+        <a class="card" href="https://mateusiw.github.io/envio-de-comprovantes-nfe/" target="_blank">
+            <span class="icon">🧾</span> Envio de Comprovantes NFe
+        </a>
+        <a class="card" href="https://mateusiw.github.io/programacao-semana-spg/" target="_blank">
+            <span class="icon">📅</span> Programação da Semana
+        </a>
+        <a class="card" href="https://mateusiw.github.io/organograma-spg/" target="_blank">
+            <span class="icon">🏢</span> Organograma SPG
+        </a>
+    </div>
+
+</main>
+
+<footer>SPG Sede — Central de Sistemas Internos</footer>
+
+<script>
+    const BRAND_LOGO_SVG = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="80" fill="#0f172a"/>
+  <rect x="40" y="40" width="432" height="432" rx="60" fill="#1e293b"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="160" font-weight="900" letter-spacing="8" fill="#15803d">SPG</text>
+  <text x="256" y="360" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="700" letter-spacing="6" fill="#64748b">SISTEMAS</text>
+</svg>`.trim();
+
+    function getBrandLogoDataUri() {
+        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(BRAND_LOGO_SVG)}`;
+    }
+
+    function applyBrandAssets() {
+        const logoUri = getBrandLogoDataUri();
+        const favicon = document.getElementById('siteFavicon');
+        const appleTouchIcon = document.getElementById('siteAppleTouchIcon');
+        const manifestLink = document.getElementById('siteManifest');
+
+        if (favicon) favicon.href = logoUri;
+        if (appleTouchIcon) appleTouchIcon.href = logoUri;
+        if (manifestLink) {
+            const manifest = {
+                name: 'SPG — Central de Sistemas',
+                short_name: 'SPG',
+                start_url: '.',
+                display: 'standalone',
+                background_color: '#0f172a',
+                theme_color: '#0f172a',
+                icons: [
+                    { src: logoUri, sizes: '192x192', type: 'image/svg+xml' },
+                    { src: logoUri, sizes: '512x512', type: 'image/svg+xml' }
+                ]
+            };
+            manifestLink.href = `data:application/manifest+json,${encodeURIComponent(JSON.stringify(manifest))}`;
+        }
+    }
+
+    applyBrandAssets();
+</script>
+
+</body>
+</html>
