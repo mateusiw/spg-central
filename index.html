@@ -7,21 +7,62 @@
     <link id="siteFavicon" rel="icon" type="image/png">
     <link id="siteAppleTouchIcon" rel="apple-touch-icon">
     <link id="siteManifest" rel="manifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        :root {
+            --bg: #0a0a0a;
+            --bg-soft: #161616;
+            --surface: #181818;
+            --surface-hover: #232323;
+            --border: #2e2e2e;
+            --text: #f5f5f5;
+            --text-muted: #a3a3a3;
+            --text-dim: #737373;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger: #ef4444;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --shadow-soft: rgba(0, 0, 0, 0.3);
+            color-scheme: dark;
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f1f5f9;
+            --bg-soft: #e8eef6;
+            --surface: #ffffff;
+            --surface-hover: #f8fafc;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-muted: #475569;
+            --text-dim: #64748b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --danger: #dc2626;
+            --shadow: rgba(15, 23, 42, 0.10);
+            --shadow-soft: rgba(15, 23, 42, 0.06);
+            color-scheme: light;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f172a;
-            color: #f1f5f9;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at 15% 0%, var(--bg-soft) 0%, transparent 45%),
+                var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
             min-height: 100vh;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
 
         /* ── Login ── */
         #loginOverlay {
             position: fixed;
             inset: 0;
-            background: #0f172a;
+            background: var(--bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -29,9 +70,9 @@
         }
 
         .login-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             padding: 40px 32px 32px;
             width: 100%;
             max-width: 360px;
@@ -39,12 +80,13 @@
             flex-direction: column;
             align-items: center;
             gap: 14px;
+            box-shadow: 0 20px 40px var(--shadow);
         }
 
         .login-card img {
             width: 72px;
             height: 72px;
-            border-radius: 10px;
+            border-radius: 14px;
             margin-bottom: 4px;
         }
 
@@ -57,7 +99,7 @@
 
         .login-card .subtitle {
             font-size: 0.62rem;
-            color: #64748b;
+            color: var(--text-dim);
             text-transform: uppercase;
             letter-spacing: 0.18em;
             font-weight: 700;
@@ -67,19 +109,19 @@
 
         .login-input {
             width: 100%;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 6px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             padding: 10px 14px;
-            color: #f1f5f9;
+            color: var(--text);
             font-size: 0.875rem;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.15s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
-        .login-input:focus { border-color: #3b82f6; }
-        .login-input::placeholder { color: #475569; }
+        .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+        .login-input::placeholder { color: var(--text-dim); }
 
         .senha-wrap {
             position: relative;
@@ -95,7 +137,7 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #64748b;
+            color: var(--text-dim);
             cursor: pointer;
             padding: 4px;
             display: flex;
@@ -103,14 +145,14 @@
             transition: color 0.15s;
         }
 
-        .btn-olho:hover { color: #94a3b8; }
+        .btn-olho:hover { color: var(--text-muted); }
 
         .btn-entrar {
             width: 100%;
-            background: #3b82f6;
+            background: var(--accent);
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 11px;
             font-size: 0.875rem;
             font-weight: 700;
@@ -121,11 +163,11 @@
             margin-top: 4px;
         }
 
-        .btn-entrar:hover { background: #2563eb; }
-        .btn-entrar:disabled { background: #1e3a5f; color: #475569; cursor: not-allowed; }
+        .btn-entrar:hover { background: var(--accent-hover); }
+        .btn-entrar:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; }
 
         .login-erro {
-            color: #ef4444;
+            color: var(--danger);
             font-size: 0.75rem;
             text-align: center;
             min-height: 16px;
@@ -135,21 +177,27 @@
         #appContent { display: none; }
 
         header {
-            background: #1e293b;
-            border-bottom: 2px solid #334155;
-            padding: 20px 24px;
+            background: color-mix(in srgb, var(--surface) 88%, transparent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 24px;
             display: flex;
             align-items: center;
             gap: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 0 var(--shadow-soft);
         }
 
         header img {
             width: 40px;
             height: 40px;
-            border-radius: 6px;
+            border-radius: 8px;
             background: white;
             padding: 3px;
-            border: 1px solid #475569;
+            border: 1px solid var(--border);
         }
 
         header h1 {
@@ -161,7 +209,7 @@
 
         header p {
             font-size: 0.65rem;
-            color: #94a3b8;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.15em;
             font-weight: 700;
@@ -169,66 +217,134 @@
         }
 
         main {
-            max-width: 960px;
+            max-width: 1080px;
             margin: 0 auto;
-            padding: 32px 16px 48px;
+            padding: 32px 20px 48px;
         }
 
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 9px 16px;
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .tab::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: var(--cat-color, var(--text-dim));
+        }
+
+        .tab:hover {
+            border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 55%, var(--border));
+            color: var(--text);
+        }
+
+        .tab.active {
+            background: color-mix(in srgb, var(--cat-color, var(--accent)) 15%, var(--surface));
+            border-color: var(--cat-color, var(--accent));
+            color: var(--text);
+        }
+
+        .tabs + .section-title { margin-top: 20px; }
+
         .section-title {
-            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.68rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #64748b;
-            margin-bottom: 10px;
-            margin-top: 28px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid #1e293b;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            margin-top: 32px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
         }
+
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--cat-color, var(--accent));
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat-color, var(--accent)) 20%, transparent);
+            flex-shrink: 0;
+        }
+
+        .section-title:first-child { margin-top: 0; }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
         }
 
         a.card {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 13px 14px;
+            gap: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
             text-decoration: none;
-            color: #e2e8f0;
-            font-size: 0.8rem;
+            color: var(--text);
+            font-size: 0.83rem;
             font-weight: 600;
-            transition: background 0.15s, border-color 0.15s, transform 0.1s;
+            transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
             line-height: 1.3;
         }
 
         a.card:hover {
-            background: #293548;
-            border-color: #3b82f6;
-            transform: translateY(-1px);
+            background: var(--surface-hover);
+            border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 55%, var(--border));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px var(--shadow-soft);
         }
 
         a.card .icon {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             flex-shrink: 0;
-            width: 22px;
-            text-align: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: color-mix(in srgb, var(--cat-color, var(--accent)) 16%, transparent);
         }
 
         footer {
             text-align: center;
             padding: 24px;
-            color: #475569;
+            color: var(--text-dim);
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid var(--border);
         }
 
         .header-right {
@@ -240,16 +356,32 @@
 
         .header-usuario {
             font-size: 0.7rem;
-            color: #64748b;
+            color: var(--text-dim);
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
 
+        .btn-tema {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s, transform 0.15s;
+        }
+
+        .btn-tema:hover { border-color: var(--accent); color: var(--accent); transform: rotate(15deg); }
+
         .btn-sair {
             background: none;
-            border: 1px solid #334155;
-            border-radius: 5px;
-            color: #64748b;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            color: var(--text-dim);
             font-size: 0.7rem;
             font-family: inherit;
             font-weight: 700;
@@ -260,7 +392,7 @@
             transition: border-color 0.15s, color 0.15s;
         }
 
-        .btn-sair:hover { border-color: #ef4444; color: #ef4444; }
+        .btn-sair:hover { border-color: var(--danger); color: var(--danger); }
 
         .loading-wrap {
             display: flex;
@@ -271,8 +403,8 @@
         .spinner {
             width: 28px;
             height: 28px;
-            border: 3px solid #334155;
-            border-top-color: #3b82f6;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
@@ -282,14 +414,14 @@
         .msg-info {
             text-align: center;
             margin-top: 60px;
-            color: #64748b;
+            color: var(--text-dim);
             font-size: 0.85rem;
         }
 
         .msg-erro {
             text-align: center;
             margin-top: 60px;
-            color: #ef4444;
+            color: var(--danger);
             font-size: 0.85rem;
         }
     </style>
@@ -334,6 +466,11 @@
         </div>
         <div class="header-right">
             <span class="header-usuario" id="headerUsuario"></span>
+            <button class="btn-tema" id="btnTema" type="button" title="Alternar tema claro/escuro">
+                <svg id="iconTema" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </button>
             <button class="btn-sair" id="btnSair">Sair</button>
         </div>
     </header>
@@ -363,8 +500,8 @@
                 short_name: 'SPG Sistema',
                 start_url: '.',
                 display: 'standalone',
-                background_color: '#0f172a',
-                theme_color: '#0f172a',
+                background_color: '#f1f5f9',
+                theme_color: '#f1f5f9',
                 icons: [
                     { src: logoUri, sizes: '192x192', type: 'image/png' },
                     { src: logoUri, sizes: '512x512', type: 'image/png' }
@@ -373,6 +510,35 @@
             manifestLink.href = `data:application/manifest+json,${encodeURIComponent(JSON.stringify(manifest))}`;
         }
     }
+
+    // ── Tema (claro/escuro) ──
+    const CHAVE_TEMA = 'spg_tema';
+    const btnTema    = document.getElementById('btnTema');
+    const iconTema   = document.getElementById('iconTema');
+
+    const SVG_SOL = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+    const SVG_LUA = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+    function aplicarTema(tema) {
+        document.documentElement.setAttribute('data-theme', tema);
+        // Ícone mostrado é sempre o do modo para o qual o clique vai mudar.
+        iconTema.innerHTML = tema === 'dark' ? SVG_SOL : SVG_LUA;
+        btnTema.title = tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro';
+    }
+
+    function alternarTema() {
+        const atual = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        const novo  = atual === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(CHAVE_TEMA, novo);
+        aplicarTema(novo);
+    }
+
+    (function iniciarTema() {
+        const salvo = localStorage.getItem(CHAVE_TEMA);
+        aplicarTema(salvo || 'light');
+    })();
+
+    btnTema.addEventListener('click', alternarTema);
 
     // ── Eye Toggle ──
     const senhaInput = document.getElementById('loginSenha');
@@ -467,6 +633,63 @@
         }
     }
 
+    // ── Cores por categoria (identidade visual de cada seção) ──
+    const PALETA_CATEGORIAS = [
+        { chave: /produ/i,        cor: '#22c55e' },
+        { chave: /admin|rh/i,     cor: '#eab308' },
+        { chave: /monitor/i,      cor: '#3b82f6' },
+        { chave: /check/i,        cor: '#f97316' },
+    ];
+    const PALETA_RESERVA = ['#8b5cf6', '#ec4899', '#14b8a6', '#f43f5e'];
+
+    function corCategoria(nome, indice) {
+        const encontrada = PALETA_CATEGORIAS.find(p => p.chave.test(nome));
+        return encontrada ? encontrada.cor : PALETA_RESERVA[indice % PALETA_RESERVA.length];
+    }
+
+    // ── Abas de categoria ──
+    let categoriasCarregadas = {};
+    let abaAtiva = 'Todos';
+
+    function renderizarPagina() {
+        const main   = document.getElementById('mainContent');
+        const nomes  = Object.keys(categoriasCarregadas);
+        const aMostrar = abaAtiva === 'Todos' ? nomes : [abaAtiva];
+
+        const tabsHtml = `
+            <div class="tabs">
+                <button class="tab ${abaAtiva === 'Todos' ? 'active' : ''}" data-cat="Todos">Todos</button>
+                ${nomes.map((cat, i) => `
+                    <button class="tab ${abaAtiva === cat ? 'active' : ''}" data-cat="${cat.replace(/"/g, '&quot;')}" style="--cat-color: ${corCategoria(cat, i)}">${cat}</button>
+                `).join('')}
+            </div>
+        `;
+
+        const conteudoHtml = aMostrar.map(cat => {
+            const indice = nomes.indexOf(cat);
+            const itens  = categoriasCarregadas[cat];
+            return `
+                <div class="section-title" style="--cat-color: ${corCategoria(cat, indice)}">${cat}</div>
+                <div class="grid" style="--cat-color: ${corCategoria(cat, indice)}">
+                    ${itens.map(item => `
+                        <a class="card" href="${item.url}" target="_blank" rel="noopener">
+                            <span class="icon">${item.icone || '🔗'}</span> ${item.nome}
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+        }).join('');
+
+        main.innerHTML = tabsHtml + conteudoHtml;
+
+        main.querySelectorAll('.tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                abaAtiva = btn.dataset.cat;
+                renderizarPagina();
+            });
+        });
+    }
+
     // ── Carregar Links da Planilha ──
     async function carregarLinks(perfil = 'master') {
         const main = document.getElementById('mainContent');
@@ -486,16 +709,9 @@
                 categorias[cat].push(item);
             });
 
-            main.innerHTML = Object.entries(categorias).map(([cat, itens]) => `
-                <div class="section-title">${cat}</div>
-                <div class="grid">
-                    ${itens.map(item => `
-                        <a class="card" href="${item.url}" target="_blank" rel="noopener">
-                            <span class="icon">${item.icone || '🔗'}</span> ${item.nome}
-                        </a>
-                    `).join('')}
-                </div>
-            `).join('');
+            categoriasCarregadas = categorias;
+            abaAtiva = 'Todos';
+            renderizarPagina();
         } catch {
             main.innerHTML = '<p class="msg-erro">Erro ao carregar sistemas. Verifique a URL do Apps Script.</p>';
         }
