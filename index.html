@@ -4,517 +4,1184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPG — Central Sites</title>
-    <link id="siteFavicon" rel="icon" type="image/png">
-    <link id="siteAppleTouchIcon" rel="apple-touch-icon">
-    <link id="siteManifest" rel="manifest">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f5f6fa">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="SPG Sites">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
+        /* ════════════ Tokens de design ════════════ */
         :root {
-            --bg: #0a0a0a;
-            --bg-soft: #161616;
-            --surface: #181818;
-            --surface-hover: #232323;
-            --border: #2e2e2e;
-            --text: #f5f5f5;
-            --text-muted: #a3a3a3;
-            --text-dim: #737373;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --danger: #ef4444;
-            --shadow: rgba(0, 0, 0, 0.5);
-            --shadow-soft: rgba(0, 0, 0, 0.3);
+            --bg: #09090b;
+            --bg-elev: #0e0e11;
+            --surface: #131316;
+            --surface-2: #1a1a1f;
+            --surface-hover: #1f1f25;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-strong: rgba(255, 255, 255, 0.14);
+            --text: #fafafa;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+            --accent: #818cf8;
+            --accent-strong: #6366f1;
+            --accent-2: #22d3ee;
+            --danger: #f87171;
+            --shadow-lg: 0 24px 60px -16px rgba(0, 0, 0, 0.7);
+            --shadow-md: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+            --grad: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #22d3ee 100%);
+            --radius: 14px;
             color-scheme: dark;
         }
 
         :root[data-theme="light"] {
-            --bg: #f1f5f9;
-            --bg-soft: #e8eef6;
+            --bg: #f5f6fa;
+            --bg-elev: #eceef5;
             --surface: #ffffff;
-            --surface-hover: #f8fafc;
-            --border: #e2e8f0;
-            --text: #0f172a;
-            --text-muted: #475569;
-            --text-dim: #64748b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
+            --surface-2: #f3f4f8;
+            --surface-hover: #fafbff;
+            --border: rgba(15, 23, 42, 0.08);
+            --border-strong: rgba(15, 23, 42, 0.15);
+            --text: #0b1020;
+            --text-muted: #4b5563;
+            --text-dim: #8a93a6;
+            --accent: #6366f1;
+            --accent-strong: #4f46e5;
+            --accent-2: #06b6d4;
             --danger: #dc2626;
-            --shadow: rgba(15, 23, 42, 0.10);
-            --shadow-soft: rgba(15, 23, 42, 0.06);
+            --shadow-lg: 0 24px 60px -20px rgba(15, 23, 42, 0.28);
+            --shadow-md: 0 12px 30px -14px rgba(15, 23, 42, 0.22);
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
             color-scheme: light;
         }
 
+        html, body { height: 100%; }
+
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background:
-                radial-gradient(circle at 15% 0%, var(--bg-soft) 0%, transparent 45%),
-                var(--bg);
-            background-attachment: fixed;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-feature-settings: 'cv11', 'ss01';
+            -webkit-font-smoothing: antialiased;
+            background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
             transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        /* ── Login ── */
+        button { font-family: inherit; }
+        ::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        /* Rolagem fina e discreta */
+        * { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; border: 3px solid transparent; background-clip: content-box; }
+
+        /* ════════════ Login ════════════ */
         #loginOverlay {
             position: fixed;
             inset: 0;
             background: var(--bg);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 20px;
+            padding: 20px;
             z-index: 9999;
+            overflow: hidden;
+        }
+
+        .aurora { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+        .aurora span {
+            position: absolute;
+            width: 46vmax;
+            height: 46vmax;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.45;
+            animation: flutuar 18s ease-in-out infinite alternate;
+        }
+
+        .aurora span:nth-child(1) { background: #6366f1; top: -18vmax; left: -10vmax; }
+        .aurora span:nth-child(2) { background: #8b5cf6; bottom: -22vmax; right: -12vmax; animation-delay: -6s; }
+        .aurora span:nth-child(3) { background: #22d3ee; top: 30%; left: 55%; width: 28vmax; height: 28vmax; opacity: 0.25; animation-delay: -12s; }
+
+        :root[data-theme="light"] .aurora span { opacity: 0.28; }
+
+        @keyframes flutuar {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(6vmax, 4vmax) scale(1.12); }
+        }
+
+        .grade-fundo {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
         }
 
         .login-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px 32px 32px;
+            position: relative;
             width: 100%;
-            max-width: 360px;
+            max-width: 380px;
+            padding: 36px 30px 28px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 14px;
-            box-shadow: 0 20px 40px var(--shadow);
+            gap: 12px;
+            background: color-mix(in srgb, var(--surface) 72%, transparent);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid var(--border-strong);
+            border-radius: 22px;
+            box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            animation: surgir 0.5s cubic-bezier(.2, .8, .2, 1) both;
         }
 
-        .login-card img {
-            width: 72px;
-            height: 72px;
-            border-radius: 14px;
-            margin-bottom: 4px;
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: #fff;
+            padding: 6px;
+            box-shadow: var(--shadow-md);
+            margin: 0 auto 8px;
         }
+
+        .login-logo img { width: 100%; height: 100%; display: block; }
 
         .login-card h2 {
-            font-size: 1.15rem;
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
+            text-align: center;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .login-card .subtitle {
-            font-size: 0.62rem;
+            text-align: center;
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            margin: -4px 0 10px;
+        }
+
+        .campo { position: relative; width: 100%; display: block; }
+
+        .campo > svg {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
             color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-weight: 700;
-            margin-top: -6px;
-            margin-bottom: 6px;
+            pointer-events: none;
         }
 
         .login-input {
             width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 14px;
+            height: 44px;
+            background: color-mix(in srgb, var(--bg) 70%, transparent);
+            border: 1px solid var(--border-strong);
+            border-radius: 11px;
+            padding: 0 14px 0 40px;
             color: var(--text);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.15s, box-shadow 0.15s;
+            transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
         }
 
-        .login-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+        .login-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+            background: var(--surface);
+        }
+
         .login-input::placeholder { color: var(--text-dim); }
-
-        .senha-wrap {
-            position: relative;
-            width: 100%;
-        }
 
         .senha-wrap .login-input { padding-right: 44px; }
 
         .btn-olho {
             position: absolute;
-            right: 10px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
+            border-radius: 7px;
             color: var(--text-dim);
             cursor: pointer;
-            padding: 4px;
+            padding: 6px;
             display: flex;
-            align-items: center;
-            transition: color 0.15s;
+            transition: color 0.15s, background 0.15s;
         }
 
-        .btn-olho:hover { color: var(--text-muted); }
+        .btn-olho:hover { color: var(--text); background: var(--surface-2); }
 
         .btn-entrar {
+            position: relative;
             width: 100%;
-            background: var(--accent);
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+            background: var(--grad);
+            background-size: 160% 160%;
             color: #fff;
             border: none;
-            border-radius: 8px;
-            padding: 11px;
-            font-size: 0.875rem;
-            font-weight: 700;
-            font-family: inherit;
+            border-radius: 11px;
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
-            letter-spacing: 0.04em;
-            transition: background 0.15s;
-            margin-top: 4px;
+            box-shadow: 0 10px 24px -10px #6366f1, inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: background-position 0.4s ease, transform 0.15s ease, box-shadow 0.15s ease;
         }
 
-        .btn-entrar:hover { background: var(--accent-hover); }
-        .btn-entrar:disabled { background: var(--border); color: var(--text-dim); cursor: not-allowed; }
+        .btn-entrar:hover { background-position: 100% 50%; transform: translateY(-1px); box-shadow: 0 14px 28px -10px #6366f1, inset 0 1px 0 rgba(255,255,255,.25); }
+        .btn-entrar:active { transform: translateY(0); }
+        .btn-entrar svg { transition: transform 0.15s; }
+        .btn-entrar:hover svg { transform: translateX(3px); }
+        .btn-entrar:disabled { opacity: 0.6; cursor: wait; transform: none; }
 
         .login-erro {
             color: var(--danger);
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             text-align: center;
-            min-height: 16px;
+            min-height: 18px;
         }
 
-        /* ── App ── */
-        #appContent { display: none; }
+        .login-rodape {
+            position: relative;
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 0.02em;
+        }
 
-        header {
-            background: color-mix(in srgb, var(--surface) 88%, transparent);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            padding: 18px 24px;
+        /* ════════════ App ════════════ */
+        #appContent {
+            display: none;
+            height: 100vh;
+            height: 100dvh;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Barra superior: logo + abas + controles */
+        .topbar {
             display: flex;
             align-items: center;
-            gap: 14px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            box-shadow: 0 1px 0 var(--shadow-soft);
+            gap: 10px;
+            height: 52px;
+            padding: 0 10px 0 12px;
+            background: var(--bg-elev);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
         }
 
-        header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: white;
+        .topbar-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: #fff;
             padding: 3px;
-            border: 1px solid var(--border);
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
         }
 
-        header h1 {
-            font-size: 1.1rem;
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
+        .browser-tabs {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 0 2px;
         }
 
-        header p {
-            font-size: 0.65rem;
+        .browser-tabs::-webkit-scrollbar { display: none; }
+
+        .btab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 34px;
+            min-width: 0;
+            max-width: 210px;
+            flex-shrink: 0;
+            padding: 0 8px 0 11px;
+            border: 1px solid transparent;
+            border-radius: 10px;
             color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+            user-select: none;
+            animation: abaEntrar 0.22s ease both;
+        }
+
+        @keyframes abaEntrar { from { opacity: 0; transform: translateY(4px); } }
+
+        .btab:hover { background: var(--surface-2); color: var(--text); }
+
+        .btab.active {
+            background: var(--surface);
+            border-color: var(--border);
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btab.active::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 9px;
+            bottom: 9px;
+            width: 3px;
+            border-radius: 0 3px 3px 0;
+            background: var(--cat-color, var(--accent));
+        }
+
+        .btab-home.active::before { display: none; }
+
+        .btab .btab-icon { font-size: 0.95rem; flex-shrink: 0; line-height: 1; display: flex; }
+        .btab .btab-nome { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .btab .btab-fechar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            border: none;
+            border-radius: 6px;
+            background: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.12s, background 0.12s, color 0.12s;
+        }
+
+        .btab:hover .btab-fechar, .btab.active .btab-fechar { opacity: 1; }
+        .btab .btab-fechar:hover { background: var(--surface-2); color: var(--danger); }
+
+        .btab-home { padding-right: 12px; }
+
+        .topbar-acoes { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+
+        .icon-btn:hover { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+        .icon-btn.perigo:hover { color: var(--danger); }
+
+        .btn-instalar {
+            display: none; /* aparece só quando o navegador permite instalar */
+            align-items: center;
+            gap: 6px;
+            height: 32px;
+            padding: 0 12px;
+            background: var(--grad);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 18px -10px #6366f1;
+            transition: transform 0.15s;
+        }
+
+        .btn-instalar:hover { transform: translateY(-1px); }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 34px;
+            padding: 0 10px 0 4px;
+            border-radius: 99px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-left: 2px;
+        }
+
+        .avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--grad);
+            color: #fff;
+            font-size: 0.68rem;
             font-weight: 700;
-            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.02em;
+        }
+
+        .header-usuario {
+            font-size: 0.78rem;
+            font-weight: 600;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ════════════ Início ════════════ */
+        #homeView {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        #homeView::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            width: 900px;
+            height: 500px;
+            transform: translateX(-50%);
+            background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-strong) 16%, transparent), transparent);
+            pointer-events: none;
         }
 
         main {
-            max-width: 1080px;
+            position: relative;
+            max-width: 1120px;
             margin: 0 auto;
-            padding: 32px 20px 48px;
+            padding: 44px 24px 64px;
         }
 
-        .tabs {
+        .hero {
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 24px;
+            animation: surgir 0.45s cubic-bezier(.2, .8, .2, 1) both;
         }
 
-        .tab {
+        .hero-data {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1.1;
+        }
+
+        .grad-texto {
+            background: var(--grad);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-sub {
+            margin-top: 8px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .hero-stats { display: flex; gap: 10px; flex-shrink: 0; }
+
+        .stat {
+            min-width: 96px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat strong { display: block; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+        .stat span { font-size: 0.7rem; color: var(--text-dim); font-weight: 500; }
+
+        /* Busca */
+        .busca {
+            position: sticky;
+            top: 12px;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 52px;
+            padding: 0 12px 0 16px;
+            margin-bottom: 22px;
+            background: color-mix(in srgb, var(--surface) 85%, transparent);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-strong);
+            border-radius: 14px;
+            box-shadow: var(--shadow-md);
+            transition: border-color 0.15s, box-shadow 0.15s;
+            animation: surgir 0.45s 0.05s cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        .busca:focus-within {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md), 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+        }
+
+        .busca svg { color: var(--text-dim); flex-shrink: 0; }
+
+        .busca input {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .busca input::placeholder { color: var(--text-dim); }
+
+        kbd {
+            font-family: inherit;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            padding: 3px 7px;
+            border-radius: 6px;
+            border: 1px solid var(--border-strong);
+            background: var(--surface-2);
+            box-shadow: 0 1px 0 var(--border-strong);
+            white-space: nowrap;
+        }
+
+        /* Filtros de categoria */
+        .chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .chip {
             display: flex;
             align-items: center;
             gap: 7px;
+            height: 32px;
+            padding: 0 6px 0 12px;
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 9px 16px;
-            font-family: inherit;
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
+            border-radius: 99px;
+            font-size: 0.78rem;
+            font-weight: 500;
             color: var(--text-muted);
             cursor: pointer;
-            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
         }
 
-        .tab::before {
+        .chip::before {
             content: '';
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            flex-shrink: 0;
             background: var(--cat-color, var(--text-dim));
         }
 
-        .tab:hover {
-            border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 55%, var(--border));
-            color: var(--text);
-        }
+        .chip-todos::before { background: var(--grad); }
 
-        .tab.active {
-            background: color-mix(in srgb, var(--cat-color, var(--accent)) 15%, var(--surface));
-            border-color: var(--cat-color, var(--accent));
-            color: var(--text);
-        }
-
-        .tabs + .section-title { margin-top: 20px; }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .chip .qtd {
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 99px;
+            background: var(--surface-2);
             font-size: 0.68rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-            margin-bottom: 14px;
-            margin-top: 32px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-title::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--cat-color, var(--accent));
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--cat-color, var(--accent)) 20%, transparent);
-            flex-shrink: 0;
-        }
-
-        .section-title:first-child { margin-top: 0; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-        }
-
-        a.card {
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px 16px;
-            text-decoration: none;
-            color: var(--text);
-            font-size: 0.83rem;
+            justify-content: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .chip:hover { color: var(--text); border-color: var(--border-strong); }
+
+        .chip.active {
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg);
+        }
+
+        .chip.active .qtd { background: color-mix(in srgb, var(--bg) 18%, transparent); color: var(--bg); }
+
+        /* Seções */
+        .secao { margin-bottom: 34px; }
+
+        .secao-titulo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.82rem;
             font-weight: 600;
-            transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-            line-height: 1.3;
+            color: var(--text);
         }
 
-        a.card:hover {
-            background: var(--surface-hover);
-            border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 55%, var(--border));
-            transform: translateY(-2px);
-            box-shadow: 0 10px 24px var(--shadow-soft);
-        }
-
-        a.card .icon {
-            font-size: 1.05rem;
-            flex-shrink: 0;
-            width: 34px;
-            height: 34px;
-            border-radius: 9px;
+        .secao-titulo .marca {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: color-mix(in srgb, var(--cat-color, var(--accent)) 16%, transparent);
+            color: var(--cat-color, var(--accent));
         }
 
-        footer {
-            text-align: center;
-            padding: 24px;
-            color: var(--text-dim);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            border-top: 1px solid var(--border);
+        .secao-titulo .marca i {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
         }
 
-        .header-right {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
+        .secao-titulo .qtd { color: var(--text-dim); font-weight: 500; }
+
+        .secao-titulo::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 10px;
         }
 
-        .header-usuario {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+        /* Cards */
+        .card-wrap {
+            position: relative;
+            animation: surgir 0.4s cubic-bezier(.2, .8, .2, 1) both;
+            animation-delay: calc(var(--i, 0) * 22ms);
         }
 
-        .btn-tema {
+        a.card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 100%;
+            padding: 12px 40px 12px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s cubic-bezier(.2, .8, .2, 1), box-shadow 0.2s;
+        }
+
+        /* Brilho que segue a cor da categoria */
+        a.card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--cat-color, var(--accent)) 14%, transparent), transparent 55%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        a.card:hover {
+            border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 45%, var(--border));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        a.card:hover::before { opacity: 1; }
+        a.card:active { transform: translateY(0) scale(0.99); }
+
+        .card-icon {
+            position: relative;
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 30px;
-            height: 30px;
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: border-color 0.15s, color 0.15s, transform 0.15s;
+            font-size: 1.2rem;
+            background: color-mix(in srgb, var(--cat-color, var(--accent)) 14%, var(--surface));
+            border: 1px solid color-mix(in srgb, var(--cat-color, var(--accent)) 22%, transparent);
         }
 
-        .btn-tema:hover { border-color: var(--accent); color: var(--accent); transform: rotate(15deg); }
+        .card-txt { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 
-        .btn-sair {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: 7px;
+        .card-nome {
+            font-size: 0.86rem;
+            font-weight: 600;
+            line-height: 1.25;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-sub {
+            font-size: 0.72rem;
             color: var(--text-dim);
-            font-size: 0.7rem;
-            font-family: inherit;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            cursor: pointer;
-            transition: border-color 0.15s, color 0.15s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .btn-sair:hover { border-color: var(--danger); color: var(--danger); }
-
-        .loading-wrap {
-            display: flex;
-            justify-content: center;
-            margin-top: 60px;
+        /* Indicador "aberto em uma aba" */
+        .card-wrap.is-open .card-icon::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            bottom: -3px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #22c55e;
+            border: 2px solid var(--surface);
         }
 
-        .spinner {
+        .card-fav {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
             width: 28px;
             height: 28px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .msg-info {
-            text-align: center;
-            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 8px;
+            background: none;
             color: var(--text-dim);
-            font-size: 0.85rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.15s, color 0.15s, background 0.15s, transform 0.15s;
         }
 
-        .msg-erro {
-            text-align: center;
-            margin-top: 60px;
-            color: var(--danger);
+        .card-wrap:hover .card-fav, .card-fav:focus-visible { opacity: 1; }
+        .card-fav:hover { background: var(--surface-2); color: #f59e0b; }
+        .card-fav.on { opacity: 1; color: #f59e0b; }
+        .card-fav.on svg { fill: currentColor; }
+        .card-fav:active { transform: translateY(-50%) scale(0.85); }
+
+        /* Recentes */
+        .recentes { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .recente {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 36px;
+            padding: 0 14px 0 6px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            max-width: 240px;
+            transition: border-color 0.15s, transform 0.15s;
+            animation: surgir 0.35s cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        .recente:hover { border-color: color-mix(in srgb, var(--cat-color) 50%, var(--border)); transform: translateY(-1px); }
+
+        .recente .mini {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.85rem;
+            background: color-mix(in srgb, var(--cat-color) 16%, var(--surface));
+            flex-shrink: 0;
+        }
+
+        .recente span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Estados vazios / erro */
+        .vazio {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .vazio .emoji { font-size: 2rem; margin-bottom: 10px; }
+        .vazio strong { display: block; color: var(--text); font-size: 0.95rem; margin-bottom: 4px; }
+        .vazio p { font-size: 0.84rem; }
+        .vazio.erro strong { color: var(--danger); }
+
+        /* Skeleton */
+        .sk {
+            background: linear-gradient(90deg, var(--surface-2) 0%, var(--surface-hover) 50%, var(--surface-2) 100%);
+            background-size: 200% 100%;
+            animation: brilho 1.3s ease-in-out infinite;
+            border-radius: 10px;
+        }
+
+        .sk-chip { width: 90px; height: 32px; border-radius: 99px; }
+        .sk-card { height: 68px; border-radius: var(--radius); }
+
+        @keyframes brilho { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+        footer {
+            text-align: center;
+            padding: 8px 24px 28px;
+            color: var(--text-dim);
+            font-size: 0.72rem;
+        }
+
+        footer kbd { margin: 0 2px; }
+
+        @keyframes surgir {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: none; }
+        }
+
+        /* ════════════ Navegador interno ════════════ */
+        #browserView {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            min-height: 0;
+            background: var(--surface);
+        }
+
+        .browser-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 44px;
+            padding: 0 8px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+            flex-shrink: 0;
+        }
+
+        .browser-toolbar .icon-btn { width: 32px; height: 32px; }
+
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 32px;
+            padding: 0 10px;
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 9px;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+
+        .tool-btn:hover { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+
+        .url-bar {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 32px;
+            padding: 0 12px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .url-bar svg { color: #22c55e; flex-shrink: 0; }
+        .url-bar span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .url-bar b { color: var(--text); font-weight: 500; }
+
+        .frames { position: relative; flex: 1; min-height: 0; }
+
+        .frames iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #fff;
+            visibility: hidden;
+        }
+
+        .frames iframe.active { visibility: visible; }
+
+        .frame-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 2;
+            display: none;
+        }
+
+        .frame-loading.show { display: block; }
+
+        .frame-loading::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            width: 40%;
+            background: var(--grad);
+            animation: carregando 1s ease-in-out infinite;
+        }
+
+        @keyframes carregando {
+            from { transform: translateX(-100%); }
+            to   { transform: translateX(250%); }
+        }
+
+        /* Transição suave do tema */
+        ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.35s; }
+
+        @media (max-width: 760px) {
+            .hero { flex-direction: column; align-items: flex-start; }
+            .hero-stats { display: none; }
+            .busca kbd { display: none; }
+            main { padding: 28px 16px 48px; }
+        }
+
+        @media (max-width: 640px) {
+            .tool-btn .rotulo { display: none; }
+            .header-usuario { display: none; }
+            .user-chip { padding: 0 4px; }
+            .btab-home .btab-nome { display: none; }
+            .btn-instalar span { display: none; }
+            .grid { grid-template-columns: 1fr; }
+            .card-fav { opacity: 1; }
+            footer .atalhos { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
 <body>
 
-<!-- ── Tela de Login ── -->
+<!-- ════════════ Tela de Login ════════════ -->
 <div id="loginOverlay">
+    <div class="aurora"><span></span><span></span><span></span></div>
+    <div class="grade-fundo"></div>
+
     <div class="login-card">
-        <img src="https://i.imgur.com/AHcNvib.png" alt="Logo SPG">
-        <h2>SPG Sede</h2>
-        <p class="subtitle">Central de Sites</p>
+        <div class="login-logo"><img src="icons/logo.png" alt="Logo SPG"></div>
+        <h2>Bem-vindo de volta</h2>
+        <p class="subtitle">Entre para acessar a Central de Sites da SPG Sede</p>
 
-        <input class="login-input" type="text" id="loginUsuario"
-               placeholder="Usuário" autocomplete="username">
+        <label class="campo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input class="login-input" type="text" id="loginUsuario" placeholder="Usuário" autocomplete="username">
+        </label>
 
-        <div class="senha-wrap">
-            <input class="login-input" type="password" id="loginSenha"
-                   placeholder="Senha" autocomplete="current-password">
+        <div class="campo senha-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input class="login-input" type="password" id="loginSenha" placeholder="Senha" autocomplete="current-password">
             <button class="btn-olho" type="button" id="btnOlho" title="Mostrar/ocultar senha">
-                <svg id="iconOlho" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
+                <svg id="iconOlho" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
                 </svg>
             </button>
         </div>
 
-        <button class="btn-entrar" id="btnLogin">Entrar</button>
+        <button class="btn-entrar" id="btnLogin" type="button">
+            <span>Entrar</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
         <p class="login-erro" id="loginErro"></p>
     </div>
+
+    <p class="login-rodape">SPG Sede · Central de Sites</p>
 </div>
 
-<!-- ── Conteúdo Principal ── -->
+<!-- ════════════ Conteúdo Principal ════════════ -->
 <div id="appContent">
-    <header>
-        <img src="https://i.imgur.com/AHcNvib.png" alt="Logo SPG">
-        <div>
-            <h1>SPG Sede</h1>
-            <p>Central de Sites</p>
-        </div>
-        <div class="header-right">
-            <span class="header-usuario" id="headerUsuario"></span>
-            <button class="btn-tema" id="btnTema" type="button" title="Alternar tema claro/escuro">
-                <svg id="iconTema" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+    <div class="topbar">
+        <img class="topbar-logo" id="topbarLogo" src="icons/logo.png" alt="Logo SPG" title="SPG Sede — Central de Sites">
+        <nav class="browser-tabs" id="browserTabs"></nav>
+        <div class="topbar-acoes">
+            <button class="btn-instalar" id="btnInstalar" type="button" title="Instalar a Central como aplicativo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Instalar app</span>
             </button>
-            <button class="btn-sair" id="btnSair">Sair</button>
+            <button class="icon-btn" id="btnTema" type="button" title="Alternar tema claro/escuro">
+                <svg id="iconTema" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </button>
+            <div class="user-chip" title="Usuário conectado">
+                <span class="avatar" id="avatarUsuario"></span>
+                <span class="header-usuario" id="headerUsuario"></span>
+            </div>
+            <button class="icon-btn perigo" id="btnSair" type="button" title="Sair">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
         </div>
-    </header>
+    </div>
 
-    <main id="mainContent">
-        <div class="loading-wrap"><div class="spinner"></div></div>
-    </main>
+    <div id="homeView">
+        <main>
+            <section class="hero">
+                <div>
+                    <p class="hero-data" id="heroData"></p>
+                    <h1><span id="heroSaudacao">Olá</span>, <span class="grad-texto" id="heroNome"></span></h1>
+                    <p class="hero-sub">Todos os seus sistemas em um só lugar.</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><strong id="statSistemas">—</strong><span>sistemas</span></div>
+                    <div class="stat"><strong id="statCategorias">—</strong><span>categorias</span></div>
+                </div>
+            </section>
 
-    <footer>SPG Sede — Central de Sites</footer>
+            <label class="busca">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" id="busca" placeholder="Buscar sistema, categoria ou endereço…" autocomplete="off" spellcheck="false">
+                <kbd>Ctrl K</kbd>
+            </label>
+
+            <div id="listaSistemas"></div>
+        </main>
+        <footer><span class="atalhos"><kbd>Ctrl</kbd>+<kbd>K</kbd> buscar · <kbd>Enter</kbd> abre o primeiro resultado · </span>SPG Sede — Central de Sites</footer>
+    </div>
+
+    <div id="browserView">
+        <div class="browser-toolbar">
+            <button class="icon-btn" id="btnInicio" type="button" title="Voltar ao início">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </button>
+            <button class="icon-btn" id="btnRecarregar" type="button" title="Recarregar página">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+            <div class="url-bar" title="Endereço">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span id="urlAtual"></span>
+            </div>
+            <button class="tool-btn" id="btnNovaAba" type="button" title="Não carregou? Abra em uma nova aba do navegador">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                <span class="rotulo">Abrir em nova aba</span>
+            </button>
+            <button class="icon-btn perigo" id="btnFecharAba" type="button" title="Fechar aba">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="frames" id="frames">
+            <div class="frame-loading" id="frameLoading"></div>
+        </div>
+    </div>
 </div>
 
 <script>
     // ── COLE AQUI A URL DO SEU WEB APP (Apps Script) ──
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykQzpzgeFvFdjjtDm3EO-ryWaF7xzmSaKk7B8vParrL42p_AQ0TJKuvRWWjgl7sXt6Jw/exec';
 
-    // ── Brand Assets ──
-    function applyBrandAssets() {
-        const logoUri = 'https://i.imgur.com/AHcNvib.png';
-        const favicon      = document.getElementById('siteFavicon');
-        const touchIcon    = document.getElementById('siteAppleTouchIcon');
-        const manifestLink = document.getElementById('siteManifest');
-        if (favicon)      { favicon.href = logoUri; favicon.type = 'image/png'; }
-        if (touchIcon)    touchIcon.href = logoUri;
-        if (manifestLink) {
-            const manifest = {
-                name: 'SPG — Central de Sistemas',
-                short_name: 'SPG Sistema',
-                start_url: '.',
-                display: 'standalone',
-                background_color: '#f1f5f9',
-                theme_color: '#f1f5f9',
-                icons: [
-                    { src: logoUri, sizes: '192x192', type: 'image/png' },
-                    { src: logoUri, sizes: '512x512', type: 'image/png' }
-                ]
-            };
-            manifestLink.href = `data:application/manifest+json,${encodeURIComponent(JSON.stringify(manifest))}`;
-        }
+    // ── Utilitários ──
+    const $ = id => document.getElementById(id);
+
+    function esc(txt) {
+        return String(txt ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
+
+    function normalizar(txt) {
+        return String(txt ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    }
+
+    function dominio(url) {
+        try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; }
+    }
+
+    function iniciais(nome) {
+        const partes = String(nome).trim().split(/\s+/).filter(Boolean);
+        if (!partes.length) return '?';
+        return ((partes[0][0] || '') + (partes.length > 1 ? partes[partes.length - 1][0] : '')).toUpperCase();
+    }
+
+    // ── Instalação como aplicativo (PWA) ──
+    // Ícones e manifest ficam em arquivos locais (manifest.json, icons/). O service worker (sw.js)
+    // é exigido pelo navegador para oferecer a instalação; funciona em https ou em localhost/127.0.0.1.
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker não registrado:', err));
+        });
+    }
+
+    let pedidoInstalacao = null;
+    const btnInstalar = $('btnInstalar');
+
+    window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault();               // segura o aviso automático do Chrome
+        pedidoInstalacao = e;
+        btnInstalar.style.display = 'flex';
+    });
+
+    btnInstalar.addEventListener('click', async () => {
+        if (!pedidoInstalacao) return;
+        pedidoInstalacao.prompt();
+        await pedidoInstalacao.userChoice;
+        pedidoInstalacao = null;
+        btnInstalar.style.display = 'none';
+    });
+
+    window.addEventListener('appinstalled', () => {
+        pedidoInstalacao = null;
+        btnInstalar.style.display = 'none';
+    });
 
     // ── Tema (claro/escuro) ──
     const CHAVE_TEMA = 'spg_tema';
-    const btnTema    = document.getElementById('btnTema');
-    const iconTema   = document.getElementById('iconTema');
+    const btnTema    = $('btnTema');
+    const iconTema   = $('iconTema');
 
     const SVG_SOL = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
     const SVG_LUA = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
@@ -524,30 +1191,28 @@
         // Ícone mostrado é sempre o do modo para o qual o clique vai mudar.
         iconTema.innerHTML = tema === 'dark' ? SVG_SOL : SVG_LUA;
         btnTema.title = tema === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro';
+        document.querySelector('meta[name="theme-color"]').content = tema === 'dark' ? '#0e0e11' : '#eceef5';
     }
 
     function alternarTema() {
         const atual = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
         const novo  = atual === 'dark' ? 'light' : 'dark';
         localStorage.setItem(CHAVE_TEMA, novo);
-        aplicarTema(novo);
+        if (document.startViewTransition) document.startViewTransition(() => aplicarTema(novo));
+        else aplicarTema(novo);
     }
 
-    (function iniciarTema() {
-        const salvo = localStorage.getItem(CHAVE_TEMA);
-        aplicarTema(salvo || 'light');
-    })();
-
+    aplicarTema(localStorage.getItem(CHAVE_TEMA) || 'light');
     btnTema.addEventListener('click', alternarTema);
 
-    // ── Eye Toggle ──
-    const senhaInput = document.getElementById('loginSenha');
-    const iconOlho   = document.getElementById('iconOlho');
+    // ── Mostrar/ocultar senha ──
+    const senhaInput = $('loginSenha');
+    const iconOlho   = $('iconOlho');
 
     const SVG_ABERTO  = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
     const SVG_FECHADO = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
 
-    document.getElementById('btnOlho').addEventListener('click', () => {
+    $('btnOlho').addEventListener('click', () => {
         const mostrar = senhaInput.type === 'password';
         senhaInput.type = mostrar ? 'text' : 'password';
         iconOlho.innerHTML = mostrar ? SVG_FECHADO : SVG_ABERTO;
@@ -555,11 +1220,24 @@
 
     // ── Sessão (localStorage) ──
     const CHAVE_SESSAO = 'spg_sessao';
+    let usuarioAtual = '';
+
+    function preencherHero(nome) {
+        const h = new Date().getHours();
+        $('heroSaudacao').textContent = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+        $('heroNome').textContent = String(nome).split(/\s+/)[0] || nome;
+        const data = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+        $('heroData').textContent = data.charAt(0).toUpperCase() + data.slice(1);
+    }
 
     function abrirApp(nome, perfil) {
-        document.getElementById('loginOverlay').style.display = 'none';
-        document.getElementById('appContent').style.display   = 'block';
-        document.getElementById('headerUsuario').textContent  = nome;
+        usuarioAtual = nome;
+        $('loginOverlay').style.display = 'none';
+        $('appContent').style.display   = 'flex';
+        $('headerUsuario').textContent  = nome;
+        $('avatarUsuario').textContent  = iniciais(nome);
+        preencherHero(nome);
+        renderizarAbas();
         carregarLinks(perfil);
     }
 
@@ -569,21 +1247,24 @@
 
     function encerrarSessao() {
         localStorage.removeItem(CHAVE_SESSAO);
-        document.getElementById('appContent').style.display   = 'none';
-        document.getElementById('loginOverlay').style.display = 'flex';
-        document.getElementById('loginUsuario').value = '';
+        fecharTodasAbas();
+        campoBusca.value = '';
+        $('appContent').style.display   = 'none';
+        $('loginOverlay').style.display = 'flex';
+        $('loginUsuario').value = '';
         senhaInput.value = '';
-        document.getElementById('loginErro').textContent = '';
+        $('loginErro').textContent = '';
     }
 
-    document.getElementById('btnSair').addEventListener('click', encerrarSessao);
+    $('btnSair').addEventListener('click', encerrarSessao);
 
     // ── Login ──
-    const btnLogin  = document.getElementById('btnLogin');
-    const loginErro = document.getElementById('loginErro');
+    const btnLogin      = $('btnLogin');
+    const btnLoginTexto = btnLogin.querySelector('span');
+    const loginErro     = $('loginErro');
 
     async function fazerLogin() {
-        const usuario = document.getElementById('loginUsuario').value.trim();
+        const usuario = $('loginUsuario').value.trim();
         const senha   = senhaInput.value;
 
         if (!usuario || !senha) {
@@ -591,9 +1272,9 @@
             return;
         }
 
-        btnLogin.disabled     = true;
-        btnLogin.textContent  = 'Entrando…';
-        loginErro.textContent = '';
+        btnLogin.disabled         = true;
+        btnLoginTexto.textContent = 'Entrando…';
+        loginErro.textContent     = '';
 
         try {
             const url = `${APPS_SCRIPT_URL}?action=login&usuario=${encodeURIComponent(usuario)}&senha=${encodeURIComponent(senha)}`;
@@ -611,27 +1292,14 @@
         } catch {
             loginErro.textContent = 'Erro de conexão. Verifique a URL do Apps Script.';
         } finally {
-            btnLogin.disabled    = false;
-            btnLogin.textContent = 'Entrar';
+            btnLogin.disabled         = false;
+            btnLoginTexto.textContent = 'Entrar';
         }
     }
 
     btnLogin.addEventListener('click', fazerLogin);
     senhaInput.addEventListener('keydown', e => { if (e.key === 'Enter') fazerLogin(); });
-    document.getElementById('loginUsuario').addEventListener('keydown', e => {
-        if (e.key === 'Enter') senhaInput.focus();
-    });
-
-    // ── Verificar sessão salva ao carregar ──
-    const sessaoSalva = localStorage.getItem(CHAVE_SESSAO);
-    if (sessaoSalva) {
-        try {
-            const { nome, perfil } = JSON.parse(sessaoSalva);
-            abrirApp(nome, perfil);
-        } catch {
-            localStorage.removeItem(CHAVE_SESSAO);
-        }
-    }
+    $('loginUsuario').addEventListener('keydown', e => { if (e.key === 'Enter') senhaInput.focus(); });
 
     // ── Cores por categoria (identidade visual de cada seção) ──
     const PALETA_CATEGORIAS = [
@@ -647,58 +1315,374 @@
         return encontrada ? encontrada.cor : PALETA_RESERVA[indice % PALETA_RESERVA.length];
     }
 
-    // ── Abas de categoria ──
+    // ── Favoritos e recentes (por usuário, no localStorage) ──
+    const chaveFav = () => `spg_favoritos_${normalizar(usuarioAtual)}`;
+    const chaveRec = () => `spg_recentes_${normalizar(usuarioAtual)}`;
+
+    function lerLista(chave) {
+        try { return JSON.parse(localStorage.getItem(chave)) || []; } catch { return []; }
+    }
+
+    function ehFavorito(url) { return lerLista(chaveFav()).includes(url); }
+
+    function alternarFavorito(url) {
+        const favs = lerLista(chaveFav());
+        const i = favs.indexOf(url);
+        if (i === -1) favs.push(url); else favs.splice(i, 1);
+        localStorage.setItem(chaveFav(), JSON.stringify(favs));
+    }
+
+    function registrarRecente(url) {
+        const recs = lerLista(chaveRec()).filter(u => u !== url);
+        recs.unshift(url);
+        localStorage.setItem(chaveRec(), JSON.stringify(recs.slice(0, 8)));
+    }
+
+    // ── Navegador interno (abas com iframes) ──
+    const elAbas       = $('browserTabs');
+    const elHome       = $('homeView');
+    const elBrowser    = $('browserView');
+    const elFrames     = $('frames');
+    const elUrl        = $('urlAtual');
+    const elCarregando = $('frameLoading');
+
+    let abasAbertas = [];   // { id, nome, icone, url, cor, iframe, carregando }
+    let abaAtualId  = null; // null = Início
+    let proximoId   = 1;
+
+    // Sites marcados na planilha (coluna "abrir" ou "modo" contendo "nova") abrem fora.
+    function deveAbrirFora(item) {
+        return /nova|externo|fora/i.test(String(item.abrir || item.modo || ''));
+    }
+
+    function abrirNoNavegador(item, cor) {
+        registrarRecente(item.url);
+
+        const existente = abasAbertas.find(a => a.url === item.url);
+        if (existente) { ativarAba(existente.id); return; }
+
+        const iframe = document.createElement('iframe');
+        iframe.src = item.url;
+        iframe.title = item.nome;
+        iframe.setAttribute('allow', 'clipboard-read; clipboard-write; fullscreen; camera; microphone; geolocation');
+        iframe.setAttribute('allowfullscreen', '');
+
+        const aba = {
+            id: proximoId++,
+            nome: item.nome,
+            icone: item.icone || '🔗',
+            url: item.url,
+            cor,
+            iframe,
+            carregando: true
+        };
+
+        iframe.addEventListener('load', () => {
+            aba.carregando = false;
+            if (abaAtualId === aba.id) elCarregando.classList.remove('show');
+        });
+
+        elFrames.appendChild(iframe);
+        abasAbertas.push(aba);
+        ativarAba(aba.id);
+    }
+
+    function mostrarUrl(url) {
+        const host = dominio(url);
+        const resto = host ? url.slice(url.indexOf(host) + host.length) : url;
+        elUrl.innerHTML = host ? `<b>${esc(host)}</b>${esc(resto)}` : esc(url);
+    }
+
+    function ativarAba(id) {
+        abaAtualId = id;
+        const aba = abasAbertas.find(a => a.id === id);
+
+        abasAbertas.forEach(a => a.iframe.classList.toggle('active', a.id === id));
+
+        if (aba) {
+            elHome.style.display    = 'none';
+            elBrowser.style.display = 'flex';
+            mostrarUrl(aba.url);
+            elCarregando.classList.toggle('show', aba.carregando);
+            document.title = `${aba.nome} — SPG Central Sites`;
+        } else {
+            abaAtualId = null;
+            elBrowser.style.display = 'none';
+            elHome.style.display    = 'block';
+            document.title = 'SPG — Central Sites';
+            if (Object.keys(categoriasCarregadas).length) renderizarPagina(); // atualiza recentes
+        }
+        renderizarAbas();
+    }
+
+    function fecharAba(id) {
+        const idx = abasAbertas.findIndex(a => a.id === id);
+        if (idx === -1) return;
+        abasAbertas[idx].iframe.remove();
+        abasAbertas.splice(idx, 1);
+
+        if (abaAtualId === id) {
+            const vizinha = abasAbertas[idx] || abasAbertas[idx - 1];
+            ativarAba(vizinha ? vizinha.id : null);
+        } else {
+            renderizarAbas();
+        }
+    }
+
+    function fecharTodasAbas() {
+        abasAbertas.forEach(a => a.iframe.remove());
+        abasAbertas = [];
+        ativarAba(null);
+    }
+
+    const SVG_CASA = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
+    const SVG_X    = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+    function renderizarAbas() {
+        elAbas.innerHTML = '';
+
+        const home = document.createElement('div');
+        home.className = 'btab btab-home' + (abaAtualId === null ? ' active' : '');
+        home.title = 'Início';
+        home.innerHTML = `<span class="btab-icon">${SVG_CASA}</span><span class="btab-nome">Início</span>`;
+        home.addEventListener('click', () => ativarAba(null));
+        elAbas.appendChild(home);
+
+        abasAbertas.forEach(aba => {
+            const el = document.createElement('div');
+            el.className = 'btab' + (aba.id === abaAtualId ? ' active' : '');
+            el.style.setProperty('--cat-color', aba.cor);
+            el.title = aba.nome;
+
+            const icone = document.createElement('span');
+            icone.className = 'btab-icon';
+            icone.textContent = aba.icone;
+
+            const nome = document.createElement('span');
+            nome.className = 'btab-nome';
+            nome.textContent = aba.nome;
+
+            const fechar = document.createElement('button');
+            fechar.className = 'btab-fechar';
+            fechar.type = 'button';
+            fechar.title = 'Fechar';
+            fechar.innerHTML = SVG_X;
+            fechar.addEventListener('click', e => { e.stopPropagation(); fecharAba(aba.id); });
+
+            el.append(icone, nome, fechar);
+            el.addEventListener('click', () => ativarAba(aba.id));
+            el.addEventListener('auxclick', e => { if (e.button === 1) { e.preventDefault(); fecharAba(aba.id); } });
+            elAbas.appendChild(el);
+        });
+
+        const ativa = elAbas.querySelector('.btab.active');
+        if (ativa) ativa.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+
+        atualizarIndicadoresAbertos();
+    }
+
+    function atualizarIndicadoresAbertos() {
+        const abertas = new Set(abasAbertas.map(a => a.url));
+        document.querySelectorAll('.card-wrap').forEach(w => w.classList.toggle('is-open', abertas.has(w.dataset.url)));
+    }
+
+    function abaAtual() { return abasAbertas.find(a => a.id === abaAtualId); }
+
+    $('btnInicio').addEventListener('click', () => ativarAba(null));
+    $('topbarLogo').addEventListener('click', () => ativarAba(null));
+
+    $('btnRecarregar').addEventListener('click', () => {
+        const aba = abaAtual();
+        if (!aba) return;
+        aba.carregando = true;
+        elCarregando.classList.add('show');
+        aba.iframe.src = aba.url;
+    });
+
+    $('btnNovaAba').addEventListener('click', () => {
+        const aba = abaAtual();
+        if (aba) window.open(aba.url, '_blank', 'noopener');
+    });
+
+    $('btnFecharAba').addEventListener('click', () => {
+        if (abaAtualId !== null) fecharAba(abaAtualId);
+    });
+
+    // ── Página inicial ──
+    const lista      = $('listaSistemas');
+    const campoBusca = $('busca');
+
     let categoriasCarregadas = {};
-    let abaAtiva = 'Todos';
+    let todosItens = [];          // [{ item, cat, cor }]
+    let porUrl     = new Map();   // url -> { item, cat, cor }
+    let abaAtiva   = 'Todos';
+    let resultadosAtuais = [];
+
+    const SVG_ESTRELA = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
+    function htmlCard(reg, i) {
+        const { item, cor } = reg;
+        const fav = ehFavorito(item.url);
+        return `
+            <div class="card-wrap" data-url="${esc(item.url)}" style="--cat-color:${cor};--i:${i}">
+                <a class="card" href="${esc(item.url)}" target="_blank" rel="noopener">
+                    <span class="card-icon">${esc(item.icone || '🔗')}</span>
+                    <span class="card-txt">
+                        <span class="card-nome">${esc(item.nome)}</span>
+                        <span class="card-sub">${esc(dominio(item.url) || reg.cat)}</span>
+                    </span>
+                </a>
+                <button class="card-fav ${fav ? 'on' : ''}" type="button" title="${fav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${SVG_ESTRELA}</button>
+            </div>`;
+    }
+
+    function htmlSecao(titulo, regs, cor, contador) {
+        if (!regs.length) return '';
+        let i = 0;
+        return `
+            <section class="secao">
+                <div class="secao-titulo" style="--cat-color:${cor || 'var(--accent)'}">
+                    <span class="marca"><i></i></span>${esc(titulo)}<span class="qtd">${contador ?? regs.length}</span>
+                </div>
+                <div class="grid">${regs.map(r => htmlCard(r, i++)).join('')}</div>
+            </section>`;
+    }
 
     function renderizarPagina() {
-        const main   = document.getElementById('mainContent');
-        const nomes  = Object.keys(categoriasCarregadas);
-        const aMostrar = abaAtiva === 'Todos' ? nomes : [abaAtiva];
+        const nomes = Object.keys(categoriasCarregadas);
+        const termo = normalizar(campoBusca.value);
+        let html = '';
 
-        const tabsHtml = `
-            <div class="tabs">
-                <button class="tab ${abaAtiva === 'Todos' ? 'active' : ''}" data-cat="Todos">Todos</button>
+        if (termo) {
+            resultadosAtuais = todosItens.filter(r =>
+                normalizar(`${r.item.nome} ${r.cat} ${r.item.url}`).includes(termo));
+
+            html = resultadosAtuais.length
+                ? htmlSecao('Resultados da busca', resultadosAtuais, null)
+                : `<div class="vazio"><div class="emoji">🔍</div><strong>Nada encontrado</strong><p>Nenhum sistema corresponde a “${esc(campoBusca.value)}”.</p></div>`;
+        } else {
+            resultadosAtuais = [];
+
+            html += `<div class="chips">
+                <button class="chip chip-todos ${abaAtiva === 'Todos' ? 'active' : ''}" data-cat="Todos">Todos<span class="qtd">${todosItens.length}</span></button>
                 ${nomes.map((cat, i) => `
-                    <button class="tab ${abaAtiva === cat ? 'active' : ''}" data-cat="${cat.replace(/"/g, '&quot;')}" style="--cat-color: ${corCategoria(cat, i)}">${cat}</button>
+                    <button class="chip ${abaAtiva === cat ? 'active' : ''}" data-cat="${esc(cat)}" style="--cat-color:${corCategoria(cat, i)}">${esc(cat)}<span class="qtd">${categoriasCarregadas[cat].length}</span></button>
                 `).join('')}
-            </div>
-        `;
+            </div>`;
 
-        const conteudoHtml = aMostrar.map(cat => {
-            const indice = nomes.indexOf(cat);
-            const itens  = categoriasCarregadas[cat];
-            return `
-                <div class="section-title" style="--cat-color: ${corCategoria(cat, indice)}">${cat}</div>
-                <div class="grid" style="--cat-color: ${corCategoria(cat, indice)}">
-                    ${itens.map(item => `
-                        <a class="card" href="${item.url}" target="_blank" rel="noopener">
-                            <span class="icon">${item.icone || '🔗'}</span> ${item.nome}
-                        </a>
-                    `).join('')}
-                </div>
-            `;
-        }).join('');
+            if (abaAtiva === 'Todos') {
+                const recentes = lerLista(chaveRec()).map(u => porUrl.get(u)).filter(Boolean).slice(0, 6);
+                if (recentes.length) {
+                    html += `<section class="secao">
+                        <div class="secao-titulo"><span class="marca"><i></i></span>Acessados recentemente</div>
+                        <div class="recentes">${recentes.map((r, i) => `
+                            <button class="recente" type="button" data-url="${esc(r.item.url)}" style="--cat-color:${r.cor};animation-delay:${i * 30}ms">
+                                <span class="mini">${esc(r.item.icone || '🔗')}</span><span>${esc(r.item.nome)}</span>
+                            </button>`).join('')}
+                        </div>
+                    </section>`;
+                }
 
-        main.innerHTML = tabsHtml + conteudoHtml;
+                const favoritos = lerLista(chaveFav()).map(u => porUrl.get(u)).filter(Boolean);
+                html += htmlSecao('Favoritos', favoritos, '#f59e0b');
+            }
 
-        main.querySelectorAll('.tab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                abaAtiva = btn.dataset.cat;
-                renderizarPagina();
+            const aMostrar = abaAtiva === 'Todos' ? nomes : [abaAtiva];
+            aMostrar.forEach(cat => {
+                html += htmlSecao(cat, todosItens.filter(r => r.cat === cat), corCategoria(cat, nomes.indexOf(cat)));
             });
-        });
+        }
+
+        lista.innerHTML = html;
+        atualizarIndicadoresAbertos();
+    }
+
+    function abrirRegistro(reg) {
+        if (deveAbrirFora(reg.item)) {
+            registrarRecente(reg.item.url);
+            window.open(reg.item.url, '_blank', 'noopener');
+            return;
+        }
+        abrirNoNavegador(reg.item, reg.cor);
+    }
+
+    // Eventos da página (delegação: um único listener para tudo)
+    lista.addEventListener('click', e => {
+        const chip = e.target.closest('.chip');
+        if (chip) {
+            abaAtiva = chip.dataset.cat;
+            renderizarPagina();
+            return;
+        }
+
+        const fav = e.target.closest('.card-fav');
+        if (fav) {
+            alternarFavorito(fav.closest('.card-wrap').dataset.url);
+            renderizarPagina();
+            return;
+        }
+
+        const recente = e.target.closest('.recente');
+        if (recente) {
+            const reg = porUrl.get(recente.dataset.url);
+            if (reg) abrirRegistro(reg);
+            return;
+        }
+
+        // Clique normal abre no navegador interno; Ctrl/Shift/clique do meio continuam abrindo em nova aba.
+        const card = e.target.closest('a.card');
+        if (card) {
+            if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+                registrarRecente(card.closest('.card-wrap').dataset.url);
+                return;
+            }
+            const reg = porUrl.get(card.closest('.card-wrap').dataset.url);
+            if (!reg) return;
+            e.preventDefault();
+            abrirRegistro(reg);
+        }
+    });
+
+    // Busca
+    campoBusca.addEventListener('input', renderizarPagina);
+    campoBusca.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && resultadosAtuais.length) {
+            abrirRegistro(resultadosAtuais[0]);
+            campoBusca.value = '';
+            campoBusca.blur();
+        } else if (e.key === 'Escape') {
+            campoBusca.value = '';
+            renderizarPagina();
+        }
+    });
+
+    // Ctrl+K (ou ⌘K): volta ao início e foca a busca
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k' && $('appContent').style.display === 'flex') {
+            e.preventDefault();
+            if (abaAtualId !== null) ativarAba(null);
+            campoBusca.focus();
+            campoBusca.select();
+        }
+    });
+
+    function mostrarSkeleton() {
+        lista.innerHTML = `
+            <div class="chips">${'<div class="sk sk-chip"></div>'.repeat(4)}</div>
+            <div class="grid">${'<div class="sk sk-card"></div>'.repeat(8)}</div>`;
     }
 
     // ── Carregar Links da Planilha ──
     async function carregarLinks(perfil = 'master') {
-        const main = document.getElementById('mainContent');
+        mostrarSkeleton();
         try {
             const res  = await fetch(`${APPS_SCRIPT_URL}?action=links&perfil=${encodeURIComponent(perfil)}`);
             const json = await res.json();
 
             if (!json.ok || !json.data || !json.data.length) {
-                main.innerHTML = '<p class="msg-info">Nenhum sistema encontrado na planilha.</p>';
+                lista.innerHTML = '<div class="vazio"><div class="emoji">📭</div><strong>Nenhum sistema encontrado</strong><p>Cadastre os links na aba “Sistemas” da planilha.</p></div>';
+                $('statSistemas').textContent = '0';
+                $('statCategorias').textContent = '0';
                 return;
             }
 
@@ -709,15 +1693,32 @@
                 categorias[cat].push(item);
             });
 
+            const nomes = Object.keys(categorias);
             categoriasCarregadas = categorias;
+            todosItens = nomes.flatMap((cat, i) =>
+                categorias[cat].map(item => ({ item, cat, cor: corCategoria(cat, i) })));
+            porUrl = new Map(todosItens.map(r => [r.item.url, r]));
+
+            $('statSistemas').textContent   = todosItens.length;
+            $('statCategorias').textContent = nomes.length;
+
             abaAtiva = 'Todos';
             renderizarPagina();
         } catch {
-            main.innerHTML = '<p class="msg-erro">Erro ao carregar sistemas. Verifique a URL do Apps Script.</p>';
+            lista.innerHTML = '<div class="vazio erro"><div class="emoji">⚠️</div><strong>Erro ao carregar sistemas</strong><p>Verifique sua conexão ou a URL do Apps Script.</p></div>';
         }
     }
 
-    applyBrandAssets();
+    // ── Verificar sessão salva ao carregar ──
+    const sessaoSalva = localStorage.getItem(CHAVE_SESSAO);
+    if (sessaoSalva) {
+        try {
+            const { nome, perfil } = JSON.parse(sessaoSalva);
+            abrirApp(nome, perfil);
+        } catch {
+            localStorage.removeItem(CHAVE_SESSAO);
+        }
+    }
 </script>
 
 </body>
