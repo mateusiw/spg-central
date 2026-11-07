@@ -1,17 +1,9 @@
 // Service worker da Central de Sites.
 // Guarda só os arquivos do próprio app (página, manifest e ícones) para abrir rápido.
 // Os dados da planilha (Apps Script) e os sites abertos nas abas sempre vêm da rede.
-const CACHE = 'spg-central-v2';
-const ARQUIVOS = [
-    './',
-    './index.html',
-    './manifest.json',
-    './icons/logo.png',
-    './icons/icon-192.png',
-    './icons/icon-512.png',
-    './icons/icon-maskable-512.png',
-    './icons/apple-touch-icon.png'
-];
+// Ícones e manifest ficam embutidos no index.html, então só a página precisa ser guardada.
+const CACHE = 'spg-central-v3';
+const ARQUIVOS = ['./', './index.html'];
 
 self.addEventListener('install', event => {
     // Se algum arquivo faltar no servidor, não impede o service worker de instalar.
