@@ -1,7 +1,7 @@
 // Service worker da Central de Sites.
 // Guarda só os arquivos do próprio app (página, manifest e ícones) para abrir rápido.
 // Os dados da planilha (Apps Script) e os sites abertos nas abas sempre vêm da rede.
-const CACHE = 'spg-central-v1';
+const CACHE = 'spg-central-v2';
 const ARQUIVOS = [
     './',
     './index.html',
@@ -14,7 +14,10 @@ const ARQUIVOS = [
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS)));
+    // Se algum arquivo faltar no servidor, não impede o service worker de instalar.
+    event.waitUntil(caches.open(CACHE).then(c =>
+        Promise.all(ARQUIVOS.map(a => c.add(a).catch(() => console.warn('Não encontrado:', a))))
+    ));
     self.skipWaiting();
 });
 
@@ -35,8 +38,10 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         fetch(req)
             .then(resp => {
-                const copia = resp.clone();
-                caches.open(CACHE).then(c => c.put(req, copia));
+                if (resp.ok) {
+                    const copia = resp.clone();
+                    caches.open(CACHE).then(c => c.put(req, copia));
+                }
                 return resp;
             })
             .catch(() => caches.match(req).then(r => r || caches.match('./index.html')))
